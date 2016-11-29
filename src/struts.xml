@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<!-- 默认的视图主题 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- 配置Struts改动，自动加载 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 配置struts为开发模式 -->
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.multipart.maxSize" value="209715200" />
+	<package name="default" extends="json-default">
+		<interceptors>
+			<interceptor name="lanjie"
+				class="com.zzia.graduation.intercepter.lanjieqi"></interceptor>
+			<interceptor-stack name="defaultStack1">
+				<interceptor-ref name="lanjie"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- <action name="applyAction_*" method="{1}" -->
+		<!-- class="applyAction" > -->
+		<!-- <result type="json"> -->
+		<!-- <param name="root">Rows</param> -->
+		<!-- </result> -->
+		<!-- <interceptor-ref name="interceptorStack1"></interceptor-ref> -->
+		<!-- </action> -->
+		<action name="loginAction_*" method="{1}" class="loginAction">
+			<result type="json">
+				<param name="root">Rows</param>
+			</result>
+		</action>
+		<!-- 它是一个通用的action -->
+		<action name="*">
+			<result>/WEB-INF/page/{1}.jsp</result>
+		</action>
+	</package>
+</struts>
