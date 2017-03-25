@@ -18,8 +18,8 @@ public class lanjieqi implements Interceptor{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private UserDao userDao;
+	/*@Autowired
+	private UserDao userDao;*/
 	
 	@Autowired
 	private UserDb userDB;
@@ -35,6 +35,12 @@ public class lanjieqi implements Interceptor{
 	}
 
 	@Override
+	public String intercept(ActionInvocation arg0) throws Exception {
+		// TODO Auto-generated method stub
+		return arg0.invoke();
+	}
+
+	/*@Override
 	public String intercept(ActionInvocation arg0) throws Exception {
 		HttpServletRequest request = (HttpServletRequest) arg0.getInvocationContext().get(ServletActionContext.HTTP_REQUEST);
 		String path = request.getServletPath();
@@ -54,7 +60,7 @@ public class lanjieqi implements Interceptor{
 				return arg0.invoke();
 			}
 		}
-	}
+	}*/
 
 	
 }

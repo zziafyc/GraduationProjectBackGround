@@ -1,65 +1,71 @@
 package com.zzia.graduation.serviceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zzia.graduation.base.Constants;
+import com.zzia.graduation.rong.ApiRongClient;
+import com.zzia.graduation.rong.FormatType;
+import com.zzia.graduation.rong.SdkHttpResult;
 import com.zzia.graduation.dao.UserDao;
 import com.zzia.graduation.model.User;
 import com.zzia.graduation.service.UserService;
+import com.zzia.graduation.utils.StringUtils;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
-	
-	@Override
-	public User getUserByUserName(String userName) {
-		User user= userDao.queryByUserName(userName);
-		return user;
-	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getAllUser(){
+	public List<User> getAllUser() {
 		return (List<User>) userDao.queryAll();
 	}
 
 	@Override
-	public List<User> getUsers(String userId){
-		User user = userDao.query(userId);
-		List<User> users = new ArrayList<User>();
-		if (user.getIfAdmin() == 1) {	
-			users = getAllUser();
-		} 
-		return users;
+	public User getUser(Object column, Object value) {
+		User user = userDao.queryOne(column, value);
+		return user;
+	}
+	@Override
+	public User getUser(Object column, Object value, Object column2, Object value2) {
+		User user=userDao.queryOne(column, value, column2, value2);
+		return user;
 	}
 
 	@Override
-	public void addUser(String userName, String pass) {
-		User user = new User();
-		user.setUserId(UUID.randomUUID().toString());
-		user.setUserName(userName);
-		user.setPass(pass);
-		userDao.add(user);
-	}
-	
-	@Override
-	public boolean checkUserName(String userName){
-		User user = userDao.queryByUserName(userName);
-		return user == null ? true:false;
+	public User register(User user) {
+
+		String userId = StringUtils.getGUID();
+		user.setUserId(userId);
+		// 然后从RongYun后台获取token值
+		try {
+			SdkHttpResult result = ApiRongClient.getToken(user.getUserId(),
+					StringUtils.subString(user.getRealName(), Constants.CommonObjects.SUBLENGTH), null, FormatType.json);
+			if (result.getHttpCode() == 200) {
+				// 表示获取token成功
+				user.setToken(new JSONObject(result.getResult()).getString("token"));
+				userDao.add(user);
+				return user;
+			}
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	@Override
-	public User getUser(String username,String pass) {
-		return userDao.queryByNameAndPass(username,pass);
+	public int updateUser(Object column, Object value,Object updateColumn,Object updateValue) {
+
+		return userDao.updateOneColumn(column, value, updateColumn, updateValue);
 	}
 	
-	
-	
-	
+
 }

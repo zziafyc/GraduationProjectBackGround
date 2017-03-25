@@ -1,35 +1,55 @@
 package com.zzia.graduation.model;
 
-import java.util.Date;
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class User {
+public class User implements Serializable {
+	/**
+	 * 用户类
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GenericGenerator(name = "userId", strategy = "assigned")
-	@GeneratedValue(generator = "userId")
+	@GenericGenerator(name = "systemUUID", strategy = "assigned")
+	@GeneratedValue(generator = "systemUUID")
+	@Column(name = "userId", insertable = true, updatable = true, nullable = false)
+	
 	private String userId;
 
-	private String userName;
+	private String password;
 
-	private String pass;
+	private String tel;
 
-	private Integer ifAdmin;
+	private String nickName;
 
 	private String realName;
 
-	private String phone;
+	private String avatar;
 
-	private String email;
+	private String token;
 
-	private String position;
+	private String qq;
 
-	private Date updateTime;
+	private String weChat;
 
-	private String remark;
+	private String campusAddress;
+	
+	private String address;
+	
+	private int state;  //登录状态  0：表示未登录 1：表示已登录
+	
+	private String loginDate;  //最后的登录时间
+
+	public User() {
+		super();
+	}
 
 	public String getUserId() {
 		return userId;
@@ -39,28 +59,28 @@ public class User {
 		this.userId = userId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getPass() {
-		return pass;
+	public String getTel() {
+		return tel;
 	}
 
-	public void setPass(String pass) {
-		this.pass = pass;
+	public void setTel(String tel) {
+		this.tel = tel;
 	}
 
-	public Integer getIfAdmin() {
-		return ifAdmin;
+	public String getNickName() {
+		return nickName;
 	}
 
-	public void setIfAdmin(Integer ifAdmin) {
-		this.ifAdmin = ifAdmin;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public String getRealName() {
@@ -71,44 +91,76 @@ public class User {
 		this.realName = realName;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getAvatar() {
+		return avatar;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setAvatar(String avavtar) {
+		this.avatar = avavtar;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getToken() {
+		return token;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
-	public String getPosition() {
-		return position;
+	public String getQq() {
+		return qq;
 	}
 
-	public void setPosition(String position) {
-		this.position = position;
+	public void setQq(String qq) {
+		this.qq = qq;
 	}
 
-	public Date getUpdateTime() {
-		return updateTime;
+	
+
+	public String getWeChat() {
+		return weChat;
 	}
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
+	public void setWeChat(String weChat) {
+		this.weChat = weChat;
 	}
 
-	public String getRemark() {
-		return remark;
+	public String getCampusAddress() {
+		return campusAddress;
 	}
 
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setCampusAddress(String campusAddress) {
+		this.campusAddress = campusAddress;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(String loginDate) {
+		this.loginDate = loginDate;
+	}
+	
+	
+
+	
+	
+
+	
 }
