@@ -1,6 +1,7 @@
 package com.zzia.graduation.action;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.zzia.graduation.base.BaseAction;
 import com.zzia.graduation.base.Constants;
+import com.zzia.graduation.model.Friends;
 import com.zzia.graduation.model.User;
 import com.zzia.graduation.service.UserService;
 import com.zzia.graduation.utils.DateUtils;
@@ -44,37 +46,13 @@ public class UserAction extends BaseAction {
 	// post请求
 	public String getUserInfo() {
 		try {
-			JSONObject jsonObject = ParameterUtils.getObject(ServletActionContext.getRequest());
-			if (ParameterUtils.judgeJsonParams(jsonObject, "userId")) {
-				String userId = jsonObject.getString("userId");
-				User user = userService.getUser("userId", userId);
-				if (user != null) {
-					setRows(PutUtils.success(user));
-				} else {
-					setRows(PutUtils.empty("该用户不存在！"));
-				}
-
-			} else {
-				setRows(PutUtils.parameterError());
-			}
-		} catch (Exception e) {
-			System.out.println(StringUtils.getErrorMsg());
-			e.printStackTrace();
-		}
-
-		return SUCCESS;
-	}
-
-	// get请求
-	public String getUserInfo2() {
-		try {
 			String userId = ServletActionContext.getRequest().getParameter("userId");
-			if (userId != null) {
+			if (ParameterUtils.judgeParams(userId)) {
 				User user = userService.getUser("userId", userId);
 				if (user != null) {
 					setRows(PutUtils.success(user));
 				} else {
-					setRows(PutUtils.empty("该用户不存在！"));
+					setRows(PutUtils.empty("该用户已不存在！"));
 				}
 
 			} else {
@@ -152,24 +130,69 @@ public class UserAction extends BaseAction {
 				if (ParameterUtils.judgeParams(user.getTel(), user.getPassword())) {
 					User user2 = userService.getUser("tel", user.getTel(), "password", user.getPassword());
 					if (user2 != null) {
-						if(user2.getState()==0){
-							//更新用户的登录状态
+						if (user2.getState() == 0) {
+							// 更新用户的登录状态
 							user2.setState(1);
 							user2.setLoginDate(DateUtils.getDataTime());
 							userService.updateUser("userId", user2.getUserId(), "state", 1);
-							userService.updateUser("userId", user2.getUserId(), "loginDate",DateUtils.getDataTime());
+							userService.updateUser("userId", user2.getUserId(), "loginDate", DateUtils.getDataTime());
 							setRows(PutUtils.success(user2, "登录成功"));
-						}else{
+						} else {
 							setRows(PutUtils.success(Constants.Code.ONLINE, "用户已在其他终端登录"));
 						}
-						
+
 					} else {
 						setRows(PutUtils.success(Constants.Code.ERROR, "用户名或密码错误！"));
 					}
 				} else {
-					setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数错误"));
+					setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
 				}
 
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			setRows(PutUtils.error());
+		}
+
+		return SUCCESS;
+	}
+
+	// 获取好友列表
+	public String getAllFriends() {
+
+		try {
+			String userId = ServletActionContext.getRequest().getParameter("userId");
+			if (ParameterUtils.judgeParams(userId)) {
+				Map<String, List<Object>> map = userService.getAllFriends(userId);
+				if (map != null) {
+					setRows(PutUtils.success(map, "返回好友列表成功"));
+				} else {
+					setRows(PutUtils.empty("暂无好友哦"));
+				}
+
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+			}
+
+		} catch (Exception e) {
+			setRows(PutUtils.error());
+		}
+		return SUCCESS;
+	}
+
+	public String addFriend() {
+
+		try {
+			Friends friend = (Friends) ParameterUtils.getObject(ServletActionContext.getRequest(), Friends.class);
+			if (friend != null) {
+				if (userService.addFriend(friend)) {
+					setRows(PutUtils.success());
+				} else {
+					PutUtils.error(Constants.Code.ERROR, "申请发送失败！");
+				}
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
 			}
 
 		} catch (Exception e) {

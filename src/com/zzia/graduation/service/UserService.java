@@ -1,9 +1,11 @@
 package com.zzia.graduation.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zzia.graduation.model.Friends;
 import com.zzia.graduation.model.User;
 
 @Transactional
@@ -24,4 +26,9 @@ public interface UserService {
 	//修改用户的某个信息
 	public int updateUser(Object column, Object value,Object updateColumn,Object updateValue);
 
+	//获取好友列表
+	public Map<String, List<Object>> getAllFriends(String userId) throws Exception;
+
+	//添加好友
+	public boolean addFriend(Friends friend);
 }

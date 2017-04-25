@@ -7,12 +7,15 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
+import com.zzia.graduation.dao.FriendsDao;
 import com.zzia.graduation.dao.UserDao;
 
 @Aspect
 public class ChangeDB extends AbstractJUnit4SpringContextTests{
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private FriendsDao friendsDao;
 
 	@Pointcut("execution(* com.zzia.graduation.aop.UserDbImpl.recovery*(..))")
 	private void recoveryDB(){}
@@ -34,6 +37,7 @@ public class ChangeDB extends AbstractJUnit4SpringContextTests{
 	
 	public void setFactory(SessionFactory sf){
 		userDao.setSessionFactory(sf);
+		friendsDao.setSessionFactory(sf);
 	
 	}
 }

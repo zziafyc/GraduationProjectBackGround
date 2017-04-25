@@ -30,6 +30,8 @@ public class User implements Serializable {
 	private String nickName;
 
 	private String realName;
+	
+	private String sex;
 
 	private String avatar;
 
@@ -89,6 +91,15 @@ public class User implements Serializable {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+	
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 	public String getAvatar() {

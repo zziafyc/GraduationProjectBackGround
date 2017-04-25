@@ -1,18 +1,23 @@
 package com.zzia.graduation.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.zzia.graduation.base.Constants;
 import com.zzia.graduation.rong.ApiRongClient;
 import com.zzia.graduation.rong.FormatType;
 import com.zzia.graduation.rong.SdkHttpResult;
+import com.zzia.graduation.dao.FriendsDao;
 import com.zzia.graduation.dao.UserDao;
+import com.zzia.graduation.model.Friends;
 import com.zzia.graduation.model.User;
 import com.zzia.graduation.service.UserService;
+import com.zzia.graduation.utils.CommentUtils;
+import com.zzia.graduation.utils.DateUtils;
 import com.zzia.graduation.utils.StringUtils;
 
 @Service
@@ -20,6 +25,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private FriendsDao friendsDao;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -32,9 +39,10 @@ public class UserServiceImpl implements UserService {
 		User user = userDao.queryOne(column, value);
 		return user;
 	}
+
 	@Override
 	public User getUser(Object column, Object value, Object column2, Object value2) {
-		User user=userDao.queryOne(column, value, column2, value2);
+		User user = userDao.queryOne(column, value, column2, value2);
 		return user;
 	}
 
@@ -46,7 +54,8 @@ public class UserServiceImpl implements UserService {
 		// 然后从RongYun后台获取token值
 		try {
 			SdkHttpResult result = ApiRongClient.getToken(user.getUserId(),
-					StringUtils.subString(user.getRealName(), Constants.CommonObjects.SUBLENGTH), null, FormatType.json);
+					StringUtils.subString(user.getRealName(), Constants.CommonObjects.SUBLENGTH), null,
+					FormatType.json);
 			if (result.getHttpCode() == 200) {
 				// 表示获取token成功
 				user.setToken(new JSONObject(result.getResult()).getString("token"));
@@ -62,10 +71,50 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int updateUser(Object column, Object value,Object updateColumn,Object updateValue) {
+	public int updateUser(Object column, Object value, Object updateColumn, Object updateValue) {
 
 		return userDao.updateOneColumn(column, value, updateColumn, updateValue);
 	}
-	
+
+	@Override
+	public Map<String, List<Object>> getAllFriends(String userId) throws Exception {
+		List<User> list = new ArrayList<>();
+		List<Friends> list1 = friendsDao.queryAll("applicationId", userId, "state", 1);
+		List<Friends> list2 = friendsDao.queryAll("applicationObjectId", userId, "state", 1);
+		if (list1 != null && !list1.isEmpty()) {
+			for (Friends model : list1) {
+				User user = userDao.queryOne("userId", model.getApplicationObjectId());
+				if (user != null) {
+					list.add(user);
+				}
+			}
+
+		}
+		if (list2 != null && !list2.isEmpty()) {
+			for (Friends model : list2) {
+				User user = userDao.queryOne("userId", model.getApplicationId());
+				if (user != null) {
+					list.add(user);
+				}
+			}
+		}
+		if (!list.isEmpty()) {
+			return CommentUtils.sortByFirstChar(list, "nickName");
+		} else {
+			return null;
+		}
+
+	}
+
+	@Override
+	public boolean addFriend(Friends friend) {
+		if (friend != null) {
+			friend.setApplicationDate(DateUtils.getDataTime());
+			friendsDao.add(friend);
+			return true;
+		}
+		return false;
+
+	}
 
 }

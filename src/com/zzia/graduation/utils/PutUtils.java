@@ -74,12 +74,12 @@ public class PutUtils {
 
 	// 请求出错，不带信息返回数据
 	public static Map<String, Object> empty() {
-		return result(Constants.Code.EMPTY, Constants.Code.SUCCESS, null, "没有更多数据了");
+		return result( Constants.Code.SUCCESS,Constants.Code.EMPTY, null, "没有更多数据了");
 	}
 
 	// 请求出错，不带信息返回数据
 	public static Map<String, Object> empty(String message) {
-		return result(Constants.Code.EMPTY, Constants.Code.SUCCESS, null, message);
+		return result( Constants.Code.SUCCESS,Constants.Code.EMPTY, null, message);
 	}
 
 	// 用于增删改
