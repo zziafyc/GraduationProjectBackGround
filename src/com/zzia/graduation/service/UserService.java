@@ -31,4 +31,7 @@ public interface UserService {
 
 	//添加好友
 	public boolean addFriend(Friends friend);
+	
+	//修改登录状态
+	public boolean updateLoginState(User user);
 }

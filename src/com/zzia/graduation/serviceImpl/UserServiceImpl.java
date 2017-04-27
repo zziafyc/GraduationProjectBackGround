@@ -51,10 +51,11 @@ public class UserServiceImpl implements UserService {
 
 		String userId = StringUtils.getGUID();
 		user.setUserId(userId);
+		user.setState(1);//注册成功后，就进入了登录状态
 		// 然后从RongYun后台获取token值
 		try {
 			SdkHttpResult result = ApiRongClient.getToken(user.getUserId(),
-					StringUtils.subString(user.getRealName(), Constants.CommonObjects.SUBLENGTH), null,
+					StringUtils.subString(user.getNickName(), Constants.CommonObjects.SUBLENGTH), null,
 					FormatType.json);
 			if (result.getHttpCode() == 200) {
 				// 表示获取token成功
@@ -115,6 +116,15 @@ public class UserServiceImpl implements UserService {
 		}
 		return false;
 
+	}
+
+	@Override
+	public boolean updateLoginState(User user) {
+		if(user!=null){
+			userDao.updateOneColumn("userId", user.getUserId(), "state", 0);
+			return true;
+		}
+		return false;
 	}
 
 }

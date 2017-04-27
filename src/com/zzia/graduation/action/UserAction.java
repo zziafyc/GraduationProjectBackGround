@@ -65,6 +65,32 @@ public class UserAction extends BaseAction {
 
 		return SUCCESS;
 	}
+	//修改登录状态
+	public String updateLoginState() {
+		try {
+			String userId = ServletActionContext.getRequest().getParameter("userId");
+			if (ParameterUtils.judgeParams(userId)) {
+				User user = userService.getUser("userId", userId);
+				if (user != null) {
+					if(userService.updateLoginState(user)){
+						setRows(PutUtils.success());
+					}else{
+						PutUtils.error(Constants.Code.ERROR, "修改状态失败！");
+					}
+				} else {
+					setRows(PutUtils.empty("该用户已不存在！"));
+				}
+
+			} else {
+				setRows(PutUtils.parameterError());
+			}
+		} catch (Exception e) {
+			System.out.println(StringUtils.getErrorMsg());
+			e.printStackTrace();
+		}
+
+		return SUCCESS;
+	}
 
 	// 用户、对于已经注册的的微信、qq则返回成功后直接走登录
 	public String register() {
