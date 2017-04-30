@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -48,6 +49,9 @@ public class User implements Serializable {
 	private int state;  //登录状态  0：表示未登录 1：表示已登录
 	
 	private String loginDate;  //最后的登录时间
+	
+	@Transient
+	public String  remark; //我给他人的标注，为了方便查找好友
 
 	public User() {
 		super();
@@ -167,6 +171,15 @@ public class User implements Serializable {
 	public void setLoginDate(String loginDate) {
 		this.loginDate = loginDate;
 	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 	
 	
 

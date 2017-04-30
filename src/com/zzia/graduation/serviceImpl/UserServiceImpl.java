@@ -84,8 +84,9 @@ public class UserServiceImpl implements UserService {
 		List<Friends> list2 = friendsDao.queryAll("applicationObjectId", userId, "state", 1);
 		if (list1 != null && !list1.isEmpty()) {
 			for (Friends model : list1) {
-				User user = userDao.queryOne("userId", model.getApplicationObjectId());
+				User user = userDao.queryOne("userId", model.getApplicationObjectId());//我是申请方
 				if (user != null) {
+					user.setRemark(model.getRemark1());
 					list.add(user);
 				}
 			}
@@ -93,14 +94,15 @@ public class UserServiceImpl implements UserService {
 		}
 		if (list2 != null && !list2.isEmpty()) {
 			for (Friends model : list2) {
-				User user = userDao.queryOne("userId", model.getApplicationId());
+				User user = userDao.queryOne("userId", model.getApplicationId());//我是被申请方
 				if (user != null) {
+					user.setRemark(model.getRemark2());
 					list.add(user);
 				}
 			}
 		}
 		if (!list.isEmpty()) {
-			return CommentUtils.sortByFirstChar(list, "nickName");
+			return CommentUtils.sortByFirstChar(list, "remark");
 		} else {
 			return null;
 		}
