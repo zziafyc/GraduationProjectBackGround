@@ -20,7 +20,7 @@ public class PhotoConnect implements Serializable {
 	
 	private int id;
 	
-	private int diaryId;
+	private String diaryId;
 	
 	private int trendId;
 	
@@ -42,11 +42,11 @@ public class PhotoConnect implements Serializable {
 		this.id = id;
 	}
 
-	public int getDiaryId() {
+	public String getDiaryId() {
 		return diaryId;
 	}
 
-	public void setDiaryId(int diaryId) {
+	public void setDiaryId(String diaryId) {
 		this.diaryId = diaryId;
 	}
 

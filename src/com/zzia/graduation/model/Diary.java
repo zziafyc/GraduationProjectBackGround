@@ -1,11 +1,13 @@
 package com.zzia.graduation.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,27 +18,50 @@ public class Diary implements Serializable {
 	 * 日记类
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GenericGenerator(name = "diaryId", strategy = "assigned")
 	@GeneratedValue(generator = "diaryId")
 	@Column(name = "diaryId", insertable = true, updatable = true, nullable = false)
-	
+
 	private String diaryId;
-	
+
 	private String userId;
-	
+
 	private String diaryTitle;
-	
+
 	private String diaryContent;
-	
-	private String createDate;
-	
+
+	public String createDate;
+
 	private int authority;
-	
+
 	private String sortId;
-	
+
 	private int state;
+	
+	private String sendAddress;
+
+	@Transient
+	private User user;
+
+	@Transient
+	private List<PhotoConnect> photoList;
+
+	@Transient
+	private VideoConnect videoConnect;
+
+	@Transient
+	private String createDateTransfer;
+	
+	@Transient
+	private int praiseCount; // 点赞数
+	
+	@Transient
+	private int commentCount; // 评论数
+	
+	@Transient
+	private boolean havePraise;  //是否点赞
 
 	public Diary() {
 		super();
@@ -105,7 +130,70 @@ public class Diary implements Serializable {
 	public void setState(int state) {
 		this.state = state;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<PhotoConnect> getPhotoList() {
+		return photoList;
+	}
+
+	public void setPhotoList(List<PhotoConnect> photoList) {
+		this.photoList = photoList;
+	}
+
+	public VideoConnect getVideoConnect() {
+		return videoConnect;
+	}
+
+	public void setVideoConnect(VideoConnect videoConnect) {
+		this.videoConnect = videoConnect;
+	}
+
+	public String getCreateDateTransfer() {
+		return createDateTransfer;
+	}
+
+	public void setCreateDateTransfer(String createDateTransfer) {
+		this.createDateTransfer = createDateTransfer;
+	}
+
+	public int getPraiseCount() {
+		return praiseCount;
+	}
+
+	public void setPraiseCount(int praiseCount) {
+		this.praiseCount = praiseCount;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public boolean isHavePraise() {
+		return havePraise;
+	}
+
+	public void setHavePraise(boolean havePraise) {
+		this.havePraise = havePraise;
+	}
+
+	public String getSendAddress() {
+		return sendAddress;
+	}
+
+	public void setSendAddress(String sendAddress) {
+		this.sendAddress = sendAddress;
+	}
 	
 
 }

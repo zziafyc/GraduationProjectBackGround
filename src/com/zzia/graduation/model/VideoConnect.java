@@ -20,11 +20,13 @@ public class VideoConnect implements Serializable {
 	
 	private int id;
 	
-	private int trendId;
+	private String trendId;
 	
-	private String VideoSite;
+	private String diaryId;
 	
-	private String VideoCoverSite;
+	private String videoSite;
+	
+	private String videoCoverSite;
 	
 	private String videoTime;
 
@@ -40,28 +42,38 @@ public class VideoConnect implements Serializable {
 		this.id = id;
 	}
 
-	public int getTrendId() {
+	
+
+	public String getTrendId() {
 		return trendId;
 	}
 
-	public void setTrendId(int trendId) {
+	public void setTrendId(String trendId) {
 		this.trendId = trendId;
 	}
 
+	public String getDiaryId() {
+		return diaryId;
+	}
+
+	public void setDiaryId(String diaryId) {
+		this.diaryId = diaryId;
+	}
+
 	public String getVideoSite() {
-		return VideoSite;
+		return videoSite;
 	}
 
 	public void setVideoSite(String videoSite) {
-		VideoSite = videoSite;
+		this.videoSite = videoSite;
 	}
 
 	public String getVideoCoverSite() {
-		return VideoCoverSite;
+		return videoCoverSite;
 	}
 
 	public void setVideoCoverSite(String videoCoverSite) {
-		VideoCoverSite = videoCoverSite;
+		this.videoCoverSite = videoCoverSite;
 	}
 
 	public String getVideoTime() {

@@ -13,6 +13,8 @@ public interface BaseDao<T> {
 
 	public void add(T o);
 	
+	public void delete(int id);
+
 	public void delete(String id);
 
 	public void update(T o);
@@ -29,6 +31,8 @@ public interface BaseDao<T> {
 	
 	public List<T> queryAll(Object column, Object value,Object column2, Object value2);
 	
+	public List<T> queryAllPageDesc(Object orderName);
+	
 	public List<T> queryAllPageDesc(Object column, Object value,Object orderName);
 	
 	public List<T> queryAllPageDesc(Object column, Object value,Object column2, Object value2,Object orderName);
@@ -38,4 +42,7 @@ public interface BaseDao<T> {
 	public List<T> queryAllPageAsc(Object column, Object value,Object column2, Object value2,Object orderName);
 	
 	public T queryAll();
+
+
+	
 }

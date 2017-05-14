@@ -39,7 +39,12 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 	public void add(T o) {
 		getSession().merge(o);
 	}
+	
+	@Override
+	public void delete(int id) {
+		getSession().delete(getSession().load(clazz, new Integer(id)));
 
+	}
 	@Override
 	public void delete(String id) {
 		getSession().delete(getSession().load(clazz, id));
@@ -113,7 +118,6 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 	public List<T> queryAll(Object column, Object value) {
 		Query query = getSession().createQuery("from " + clazz.getSimpleName() + " where " + column + "=? ");
 		query.setParameter(0, value);
-		query.setMaxResults(1);
 		List<T> list = query.list();
 		if (list != null && !list.isEmpty()) {
 			return list;
@@ -138,6 +142,21 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 		}
 
 	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> queryAllPageDesc( Object orderName) {
+		Query query = getSession().createQuery(
+				"from " + clazz.getSimpleName()  + " order by " + orderName + " desc");
+
+		List<T> list = query.list();
+		if (list != null && !list.isEmpty()) {
+			return list;
+		} else {
+			return null;
+		}
+
+	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
