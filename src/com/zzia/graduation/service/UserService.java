@@ -34,4 +34,7 @@ public interface UserService {
 	
 	//修改登录状态
 	public boolean updateLoginState(User user);
+	
+	//得到模糊查询的用户
+	public List<User> searchUser(String key,String column1,String column2);
 }

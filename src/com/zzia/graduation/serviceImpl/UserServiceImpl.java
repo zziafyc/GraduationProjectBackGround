@@ -129,4 +129,10 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
+	@Override
+	public List<User> searchUser(String key,String column1,String column2) {
+	
+		return userDao.searchUser(key, column1, column2);
+	}
+
 }

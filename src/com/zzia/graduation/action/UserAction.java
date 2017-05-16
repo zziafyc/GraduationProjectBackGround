@@ -65,16 +65,40 @@ public class UserAction extends BaseAction {
 
 		return SUCCESS;
 	}
-	//修改登录状态
+
+	// 修改用户图像
+	public String updateUserAvatar() {
+
+		try {
+			User user = (User) ParameterUtils.getObject(ServletActionContext.getRequest(), User.class);
+			if (user != null) {
+				if (userService.updateUser("userId", user.getUserId(), "avatar", user.getAvatar()) > 0) {
+					setRows(PutUtils.success());
+				} else {
+					PutUtils.error(Constants.Code.ERROR, "申请发送失败！");
+				}
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			setRows(PutUtils.error());
+		}
+
+		return SUCCESS;
+	}
+
+	// 修改登录状态
 	public String updateLoginState() {
 		try {
 			String userId = ServletActionContext.getRequest().getParameter("userId");
 			if (ParameterUtils.judgeParams(userId)) {
 				User user = userService.getUser("userId", userId);
 				if (user != null) {
-					if(userService.updateLoginState(user)){
+					if (userService.updateLoginState(user)) {
 						setRows(PutUtils.success());
-					}else{
+					} else {
 						PutUtils.error(Constants.Code.ERROR, "修改状态失败！");
 					}
 				} else {
@@ -227,6 +251,24 @@ public class UserAction extends BaseAction {
 		}
 
 		return SUCCESS;
+	}
+	//模糊查询用户，用于加好友
+	public String searchUser() {
+		try {
+			String key = ServletActionContext.getRequest().getParameter("key");
+			List<User> list = userService.searchUser(key,"tel","nickName");
+			if (list != null&&list.size()>0) {
+				setRows(PutUtils.success(list));
+			} else {
+				setRows(PutUtils.empty());
+			}
+
+		} catch (Exception e) {
+			System.out.println(StringUtils.getErrorMsg());
+			e.printStackTrace();
+		}
+		return SUCCESS;
+
 	}
 
 }

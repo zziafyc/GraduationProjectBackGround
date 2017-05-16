@@ -32,6 +32,8 @@ public class TravelRoute implements Serializable {
 	private String startDate;
 	
 	private String endDate;
+	
+	private String introduction;
 
 	public TravelRoute() {
 		super();
@@ -75,6 +77,14 @@ public class TravelRoute implements Serializable {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
 	}
 	
 	
