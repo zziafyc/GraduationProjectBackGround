@@ -37,4 +37,20 @@ public interface UserService {
 	
 	//得到模糊查询的用户
 	public List<User> searchUser(String key,String column1,String column2);
+	
+	//得到我的所有好友 
+	public List<User> getAllFriendsList (String userId);
+	
+	//删除一条好友申请就记录
+	public boolean deleteFriendMessage(int id);
+	
+	//得到我的所有好友申请信息
+	public List<Friends> getAllFriendMessage(String userId);
+	
+	//修改同意状态，完成加好友
+	public boolean changeMessageState(int id,String remark);
+	
+	//修改同意状态，完成加好友
+	public boolean changeRemark(int id,String remark);
 }
+

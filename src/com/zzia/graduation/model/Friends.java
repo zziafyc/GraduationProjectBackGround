@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Friends implements Serializable {
@@ -31,7 +32,13 @@ public class Friends implements Serializable {
 	
 	private String remark2;  //申请对象备注，申请方可修改
 	
-	private Integer state;  //同意状态
+	private Integer state;  //同意状态,0未处理；1已同意；2已拒绝
+	
+	private Integer isDelete;  //被邀请方是否已删除该记录，0表示未删除(默认)，1表示已删除
+
+	@Transient
+	private User applicationUser;  //发出申请的申请人
+	
 
 	public int getId() {
 		return id;
@@ -96,6 +103,22 @@ public class Friends implements Serializable {
 
 	public void setState(Integer state) {
 		this.state = state;
+	}
+
+	public User getApplicationUser() {
+		return applicationUser;
+	}
+
+	public void setApplicationUser(User applicationUser) {
+		this.applicationUser = applicationUser;
+	}
+
+	public Integer getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(Integer isDelete) {
+		this.isDelete = isDelete;
 	}
 	
 	

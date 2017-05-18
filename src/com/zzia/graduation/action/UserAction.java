@@ -208,7 +208,7 @@ public class UserAction extends BaseAction {
 		return SUCCESS;
 	}
 
-	// 获取好友列表
+	// 获取好友列表,带字母的map
 	public String getAllFriends() {
 
 		try {
@@ -217,6 +217,29 @@ public class UserAction extends BaseAction {
 				Map<String, List<Object>> map = userService.getAllFriends(userId);
 				if (map != null) {
 					setRows(PutUtils.success(map, "返回好友列表成功"));
+				} else {
+					setRows(PutUtils.empty("暂无好友哦"));
+				}
+
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+			}
+
+		} catch (Exception e) {
+			setRows(PutUtils.error());
+		}
+		return SUCCESS;
+	}
+
+	// 获取好友列表,list集合
+	public String getAllFriendsList() {
+
+		try {
+			String userId = ServletActionContext.getRequest().getParameter("userId");
+			if (ParameterUtils.judgeParams(userId)) {
+				List<User> list = userService.getAllFriendsList(userId);
+				if (list != null) {
+					setRows(PutUtils.success(list, "返回好友列表成功"));
 				} else {
 					setRows(PutUtils.empty("暂无好友哦"));
 				}
@@ -252,15 +275,22 @@ public class UserAction extends BaseAction {
 
 		return SUCCESS;
 	}
-	//模糊查询用户，用于加好友
+
+	// 模糊查询用户，用于加好友
 	public String searchUser() {
 		try {
+			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
 			String key = ServletActionContext.getRequest().getParameter("key");
-			List<User> list = userService.searchUser(key,"tel","nickName");
-			if (list != null&&list.size()>0) {
-				setRows(PutUtils.success(list));
+			if (!StringUtils.isEmpty(key)) {
+				List<User> list = userService.searchUser(key, "tel", "nickName");
+				if (list != null && list.size() > 0) {
+					setRows(PutUtils.success(list));
+				} else {
+					setRows(PutUtils.empty());
+				}
 			} else {
-				setRows(PutUtils.empty());
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+
 			}
 
 		} catch (Exception e) {
@@ -271,4 +301,99 @@ public class UserAction extends BaseAction {
 
 	}
 
+	// 删除一条好友申请记录
+	public String deleteFriendMessage() {
+		try {
+
+			int id = Integer.parseInt(ServletActionContext.getRequest().getParameter("id"));
+			if (id > 0) {
+				if (userService.deleteFriendMessage(id)) {
+					setRows(PutUtils.success());
+				} else {
+					setRows(PutUtils.error());
+				}
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+
+			}
+
+		} catch (Exception e) {
+			System.out.println(StringUtils.getErrorMsg());
+			e.printStackTrace();
+		}
+		return SUCCESS;
+
+	}
+
+	// 得到所有好友申请记录
+	public String getAllFriendMessage() {
+		try {
+
+			String userId = ServletActionContext.getRequest().getParameter("userId");
+			if (!StringUtils.isEmpty(userId)) {
+				List<Friends> friendsMessages = userService.getAllFriendMessage(userId);
+				if (friendsMessages != null && friendsMessages.size() > 0) {
+					setRows(PutUtils.success(friendsMessages));
+				} else {
+					setRows(PutUtils.empty());
+				}
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+
+			}
+
+		} catch (Exception e) {
+			System.out.println(StringUtils.getErrorMsg());
+			e.printStackTrace();
+		}
+		return SUCCESS;
+
+	}
+
+	// 修改同意状态，完成加好友
+	public String changeMessageState() {
+		try {
+			int id = Integer.parseInt(ServletActionContext.getRequest().getParameter("id"));
+			String remark = ServletActionContext.getRequest().getParameter("remark");
+			if (ParameterUtils.judgeParams(String.valueOf(id), remark)) {
+				if (userService.changeMessageState(id, remark)) {
+					setRows(PutUtils.success());
+				} else {
+					setRows(PutUtils.error());
+				}
+			} else {
+				setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+
+			}
+
+		} catch (Exception e) {
+			System.out.println(StringUtils.getErrorMsg());
+			e.printStackTrace();
+		}
+		return SUCCESS;
+
+	}
+	// 修改同意状态，完成加好友
+		public String changeRemark() {
+			try {
+				int id = Integer.parseInt(ServletActionContext.getRequest().getParameter("id"));
+				String remark = ServletActionContext.getRequest().getParameter("remark");
+				if (ParameterUtils.judgeParams(String.valueOf(id), remark)) {
+					if (userService.changeRemark(id, remark)) {
+						setRows(PutUtils.success());
+					} else {
+						setRows(PutUtils.error());
+					}
+				} else {
+					setRows(PutUtils.error(Constants.Code.PARAMSERROR, "参数不完整或错误"));
+
+				}
+
+			} catch (Exception e) {
+				System.out.println(StringUtils.getErrorMsg());
+				e.printStackTrace();
+			}
+			return SUCCESS;
+
+		}
 }
