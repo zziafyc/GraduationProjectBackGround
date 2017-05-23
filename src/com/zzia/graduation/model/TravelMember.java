@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class TravelMember implements Serializable {
@@ -23,6 +24,13 @@ public class TravelMember implements Serializable {
 	private String travelId;
 	
 	private String memberId;
+	
+	private int state; //同意状态 0：未处理 1：已同意 2：已拒绝
+	
+	private int isDelete ;//别邀请方是否已删除该记录
+	
+	@Transient
+	private User user;
 
 	public TravelMember() {
 		super();
@@ -50,6 +58,30 @@ public class TravelMember implements Serializable {
 
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public int getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(int isDelete) {
+		this.isDelete = isDelete;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

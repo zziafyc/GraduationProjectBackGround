@@ -229,9 +229,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<Friends> getAllFriendMessage(String userId) {
+	public List<Friends> getAllFriendMessage(String userId,int currentPage,int count) {
 		List<Friends> friendsMessages = friendsDao.queryAllPageDesc("applicationObjectId", userId, "isDelete ", 0,
-				"applicationDate");
+				"applicationDate",currentPage,count);
 		if (friendsMessages != null && friendsMessages.size() > 0) {
 			for (Friends model : friendsMessages) {
 				User user = userDao.queryOne("userId", model.getApplicationId());

@@ -598,18 +598,24 @@ public class DateUtils {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date d;
 		Date now = new Date();
+		if (date == null || date.trim().equals("")) {
+			return null;
+		}
 		try {
 			d = format.parse(date);
-			if (now.getYear() - now.getYear() > 0) {
+			if (now.getYear() - d.getYear() > 0) {
 				SimpleDateFormat yFormat = new SimpleDateFormat(
 						"yyyy/MM/dd HH:mm");
 				return yFormat.format(d);
-			}  else if ((now.getMonth()-d.getMonth()>0)||(now.getDate() - d.getDate() > 1)) {
+			} else if ((now.getMonth() - d.getMonth() > 0)
+					|| (now.getDate() - d.getDate() > 2)) {
 				SimpleDateFormat dFormat = new SimpleDateFormat("MM/dd HH:mm");
 				return dFormat.format(d);
-			} else if (now.getDate() - d.getDate() > 0) {
-				return "昨天" + date.substring(12, 17);
-			} else {
+			} else if (now.getDate() - d.getDate() == 1) {
+				return "昨天  " + date.substring(11, 16);
+			} else if(now.getDate() - d.getDate() == 2){
+				return "前天  " + date.substring(11, 16);
+			}else {
 				long delta = (now.getTime() - d.getTime()) / 1000;
 				if (delta / (60 * 60) > 0)
 					return delta / (60 * 60) + "小时前";
@@ -622,7 +628,6 @@ public class DateUtils {
 			e.printStackTrace();
 		}
 		return date;
-
 	}
 
 	// **********************new add by wgy***********

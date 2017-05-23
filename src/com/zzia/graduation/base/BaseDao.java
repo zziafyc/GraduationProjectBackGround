@@ -16,6 +16,8 @@ public interface BaseDao<T> {
 	public void delete(int id);
 
 	public void delete(String id);
+	
+	public int delete(Object column, Object value);
 
 	public void update(T o);
 	
@@ -29,17 +31,19 @@ public interface BaseDao<T> {
 	
 	public List<T> queryAll(Object column, Object value);
 	
+	public List<T> queryAllAsc(Object column, Object value,Object orderName);
+	
 	public List<T> queryAll(Object column, Object value,Object column2, Object value2);
 	
-	public List<T> queryAllPageDesc(Object orderName);
+	public List<T> queryAllPageDesc(Object orderName,int currentPage,int count);
 	
-	public List<T> queryAllPageDesc(Object column, Object value,Object orderName);
+	public List<T> queryAllPageDesc(Object column, Object value,Object orderName,int currentPage,int count);
 	
-	public List<T> queryAllPageDesc(Object column, Object value,Object column2, Object value2,Object orderName);
+	public List<T> queryAllPageDesc(Object column, Object value,Object column2, Object value2,Object orderName,int currentPage,int count);
 
-	public List<T> queryAllPageAsc(Object column, Object value,Object orderName);
+	public List<T> queryAllPageAsc(Object column, Object value,Object orderName,int currentPage,int count);
 	
-	public List<T> queryAllPageAsc(Object column, Object value,Object column2, Object value2,Object orderName);
+	public List<T> queryAllPageAsc(Object column, Object value,Object column2, Object value2,Object orderName,int currentPage,int count);
 	
 	public T queryAll();
 

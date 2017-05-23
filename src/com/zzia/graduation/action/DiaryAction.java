@@ -25,7 +25,9 @@ public class DiaryAction extends BaseAction {
 	public String getAllDiary() {
 		try {
 			String usreId=ServletActionContext.getRequest().getParameter("userId");
-			List<Diary> list = diaryService.getAllDiary("createDate",usreId);
+			int currentPage=Integer.parseInt(ServletActionContext.getRequest().getParameter("currentPage"));
+			int count=Integer.parseInt(ServletActionContext.getRequest().getParameter("count"));
+			List<Diary> list = diaryService.getAllDiary("createDate",usreId,currentPage,count);
 			if (list != null) {
 				setRows(PutUtils.success(list));
 			} else {
@@ -39,6 +41,47 @@ public class DiaryAction extends BaseAction {
 		return SUCCESS;
 
 	}
+	//得到好友的所有日记（包括自己的）
+	// 得到所有日记
+		public String getAllFriendsDiary() {
+			try {
+				String usreId=ServletActionContext.getRequest().getParameter("userId");
+				int currentPage=Integer.parseInt(ServletActionContext.getRequest().getParameter("currentPage"));
+				int count=Integer.parseInt(ServletActionContext.getRequest().getParameter("count"));
+				List<Diary> list = diaryService.getAllFriendsDiary("createDate",usreId,currentPage,count);
+				if (list != null) {
+					setRows(PutUtils.success(list));
+				} else {
+					setRows(PutUtils.empty());
+				}
+
+			} catch (Exception e) {
+				System.out.println(StringUtils.getErrorMsg());
+				e.printStackTrace();
+			}
+			return SUCCESS;
+
+		}
+		// 得到所有日记
+		public String getAllMyDiary() {
+			try {
+				String usreId=ServletActionContext.getRequest().getParameter("userId");
+				int currentPage=Integer.parseInt(ServletActionContext.getRequest().getParameter("currentPage"));
+				int count=Integer.parseInt(ServletActionContext.getRequest().getParameter("count"));
+				List<Diary> list = diaryService.getAllMyDiary("createDate",usreId,currentPage,count);
+				if (list != null) {
+					setRows(PutUtils.success(list));
+				} else {
+					setRows(PutUtils.empty());
+				}
+
+			} catch (Exception e) {
+				System.out.println(StringUtils.getErrorMsg());
+				e.printStackTrace();
+			}
+			return SUCCESS;
+
+		}
 
 	// 添加日记
 	public String addDiary() {

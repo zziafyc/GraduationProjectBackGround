@@ -24,6 +24,8 @@ public class PhotoConnect implements Serializable {
 	
 	private int trendId;
 	
+	private String travelId;
+	
 	private String photoSite;
 	
 	private String photoThumbSite;
@@ -81,6 +83,16 @@ public class PhotoConnect implements Serializable {
 	public void setConnectType(int connectType) {
 		this.connectType = connectType;
 	}
+
+	public String getTravelId() {
+		return travelId;
+	}
+
+	public void setTravelId(String travelId) {
+		this.travelId = travelId;
+	}
+
+	
 	
 	
 	

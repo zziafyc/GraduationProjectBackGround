@@ -52,7 +52,7 @@ public class Diary implements Serializable {
 	private VideoConnect videoConnect;
 
 	@Transient
-	private String createDateTransfer;
+	private String createDateTransfer;//转化成几天前的格式
 	
 	@Transient
 	private int praiseCount; // 点赞数
@@ -62,6 +62,7 @@ public class Diary implements Serializable {
 	
 	@Transient
 	private boolean havePraise;  //是否点赞
+	
 
 	public Diary() {
 		super();
@@ -194,6 +195,6 @@ public class Diary implements Serializable {
 	public void setSendAddress(String sendAddress) {
 		this.sendAddress = sendAddress;
 	}
-	
+
 
 }

@@ -45,7 +45,7 @@ public interface UserService {
 	public boolean deleteFriendMessage(int id);
 	
 	//得到我的所有好友申请信息
-	public List<Friends> getAllFriendMessage(String userId);
+	public List<Friends> getAllFriendMessage(String userId,int currentPage,int count);
 	
 	//修改同意状态，完成加好友
 	public boolean changeMessageState(int id,String remark);

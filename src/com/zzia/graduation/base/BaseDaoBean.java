@@ -49,6 +49,15 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 	public void delete(String id) {
 		getSession().delete(getSession().load(clazz, id));
 	}
+	@Override
+	public int delete(Object column, Object value) {
+		Query query = getSession()
+				.createQuery("delete " + clazz.getSimpleName() + " where " + column + "=?");
+
+		query.setParameter(0, value);
+		int count = query.executeUpdate();
+		return count;
+	}
 
 	@Override
 	public void update(T o) {
@@ -126,7 +135,18 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 		}
 
 	}
-
+	@Override
+	public List<T> queryAllAsc(Object column, Object value, Object orderName) {
+		Query query = getSession().createQuery("from " + clazz.getSimpleName() + " where " + column + " =? order by ? asc ");
+		query.setParameter(0, value);
+		query.setParameter(1, orderName);
+		List<T> list = query.list();
+		if (list != null && !list.isEmpty()) {
+			return list;
+		} else {
+			return null;
+		}
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> queryAll(Object column, Object value, Object column2, Object value2) {
@@ -144,10 +164,12 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> queryAllPageDesc( Object orderName) {
+	public List<T> queryAllPageDesc( Object orderName,int currentPage,int count) {
 		Query query = getSession().createQuery(
 				"from " + clazz.getSimpleName()  + " order by " + orderName + " desc");
 
+		query.setFirstResult(count * (currentPage - 1));// 设置起始行
+		query.setMaxResults(count);// 每页条数
 		List<T> list = query.list();
 		if (list != null && !list.isEmpty()) {
 			return list;
@@ -160,10 +182,12 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> queryAllPageDesc(Object column, Object value, Object orderName) {
+	public List<T> queryAllPageDesc(Object column, Object value, Object orderName,int currentPage,int count) {
 		Query query = getSession().createQuery(
 				"from " + clazz.getSimpleName() + " where " + column + "=? order by " + orderName + " desc");
 		query.setParameter(0, value);
+		query.setFirstResult(count * (currentPage - 1));// 设置起始行
+		query.setMaxResults(count);// 每页条数
 		List<T> list = query.list();
 		if (list != null && !list.isEmpty()) {
 			return list;
@@ -175,11 +199,13 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> queryAllPageDesc(Object column, Object value, Object column2, Object value2, Object orderName) {
+	public List<T> queryAllPageDesc(Object column, Object value, Object column2, Object value2, Object orderName,int currentPage,int count) {
 		Query query = getSession().createQuery("from " + clazz.getSimpleName() + " where " + column + "=?  and "
 				+ column2 + " = ? order by " + orderName + " desc");
 		query.setParameter(0, value);
 		query.setParameter(1, value2);
+		query.setFirstResult(count * (currentPage - 1));// 设置起始行
+		query.setMaxResults(count);// 每页条数
 		List<T> list = query.list();
 		if (list != null && !list.isEmpty()) {
 			return list;
@@ -191,10 +217,12 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> queryAllPageAsc(Object column, Object value, Object orderName) {
+	public List<T> queryAllPageAsc(Object column, Object value, Object orderName,int currentPage,int count) {
 		Query query = getSession().createQuery(
 				"from " + clazz.getSimpleName() + " where " + column + "=? order by " + orderName + " asc");
 		query.setParameter(0, value);
+		query.setFirstResult(count * (currentPage - 1));// 设置起始行
+		query.setMaxResults(count);// 每页条数
 		List<T> list = query.list();
 		if (list != null && !list.isEmpty()) {
 			return list;
@@ -206,11 +234,13 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> queryAllPageAsc(Object column, Object value, Object column2, Object value2, Object orderName) {
+	public List<T> queryAllPageAsc(Object column, Object value, Object column2, Object value2, Object orderName,int currentPage,int count) {
 		Query query = getSession().createQuery("from " + clazz.getSimpleName() + " where " + column + "=?  and "
 				+ column2 + " = ? order by " + orderName + " asc");
 		query.setParameter(0, value);
 		query.setParameter(1, value2);
+		query.setFirstResult(count * (currentPage - 1));// 设置起始行
+		query.setMaxResults(count);// 每页条数
 		List<T> list = query.list();
 		if (list != null && !list.isEmpty()) {
 			return list;
@@ -229,4 +259,8 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 		else
 			return null;
 	}
+
+
+
+	
 }

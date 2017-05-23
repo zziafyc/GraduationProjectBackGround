@@ -42,6 +42,11 @@
 				<param name="root">Rows</param>
 			</result>
 		</action>
+		<action name="travelAction_*" method="{1}" class="travelAction">
+			<result type="json">
+				<param name="root">Rows</param>
+			</result>
+		</action>
 		<!-- 它是一个通用的action -->
 		<action name="*">
 			<result>/WEB-INF/page/{1}.jsp</result>

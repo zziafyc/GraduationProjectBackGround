@@ -12,8 +12,13 @@ import com.zzia.graduation.dao.DiaryDao;
 import com.zzia.graduation.dao.DiaryPraiseDao;
 import com.zzia.graduation.dao.FriendsDao;
 import com.zzia.graduation.dao.PhotoConnectDao;
+import com.zzia.graduation.dao.TravelMemberDao;
+import com.zzia.graduation.dao.TravelPlanDao;
+import com.zzia.graduation.dao.TravelRouteDao;
 import com.zzia.graduation.dao.UserDao;
 import com.zzia.graduation.dao.VideoConnectDao;
+import com.zzia.graduation.model.TravelMember;
+import com.zzia.graduation.model.TravelPlan;
 
 @Aspect
 public class ChangeDB extends AbstractJUnit4SpringContextTests{
@@ -31,6 +36,12 @@ public class ChangeDB extends AbstractJUnit4SpringContextTests{
 	private DiaryCommentDao diaryCommentDao;
 	@Autowired
 	private VideoConnectDao videoConnectDao;
+	@Autowired
+	private TravelPlanDao travelPlanDao;
+	@Autowired 
+	TravelMemberDao travelMemberDao;
+	@Autowired
+	TravelRouteDao travelRouteDao;
 
 	@Pointcut("execution(* com.zzia.graduation.aop.UserDbImpl.recovery*(..))")
 	private void recoveryDB(){}
@@ -58,6 +69,9 @@ public class ChangeDB extends AbstractJUnit4SpringContextTests{
 		diaryPraiseDao.setSessionFactory(sf);
 		diaryCommentDao.setSessionFactory(sf);
 		videoConnectDao.setSessionFactory(sf);
+		travelPlanDao.setSessionFactory(sf);
+		travelMemberDao.setSessionFactory(sf);
+		travelRouteDao.setSessionFactory(sf);
 	
 	}
 }

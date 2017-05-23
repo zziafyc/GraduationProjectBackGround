@@ -330,8 +330,10 @@ public class UserAction extends BaseAction {
 		try {
 
 			String userId = ServletActionContext.getRequest().getParameter("userId");
+			int currentPage=Integer.parseInt(ServletActionContext.getRequest().getParameter("currentPage"));
+			int count=Integer.parseInt(ServletActionContext.getRequest().getParameter("count"));
 			if (!StringUtils.isEmpty(userId)) {
-				List<Friends> friendsMessages = userService.getAllFriendMessage(userId);
+				List<Friends> friendsMessages = userService.getAllFriendMessage(userId,currentPage,count);
 				if (friendsMessages != null && friendsMessages.size() > 0) {
 					setRows(PutUtils.success(friendsMessages));
 				} else {
