@@ -29,6 +29,8 @@ public class TravelMember implements Serializable {
 	
 	private int isDelete ;//别邀请方是否已删除该记录
 	
+	private String inviteDate;//邀请时间
+	
 	@Transient
 	private User user;
 
@@ -82,6 +84,14 @@ public class TravelMember implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getInviteDate() {
+		return inviteDate;
+	}
+
+	public void setInviteDate(String inviteDate) {
+		this.inviteDate = inviteDate;
 	}
 	
 	

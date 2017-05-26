@@ -147,6 +147,18 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 			return null;
 		}
 	}
+	@Override
+	public List<T> queryAllDesc(Object column, Object value, Object orderName) {
+		Query query = getSession().createQuery("from " + clazz.getSimpleName() + " where " + column + " =? order by ? desc ");
+		query.setParameter(0, value);
+		query.setParameter(1, orderName);
+		List<T> list = query.list();
+		if (list != null && !list.isEmpty()) {
+			return list;
+		} else {
+			return null;
+		}
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> queryAll(Object column, Object value, Object column2, Object value2) {
@@ -260,7 +272,6 @@ public class BaseDaoBean<T> implements BaseDao<T> {
 			return null;
 	}
 
-
-
+	
 	
 }

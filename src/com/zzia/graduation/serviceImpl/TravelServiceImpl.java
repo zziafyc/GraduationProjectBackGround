@@ -51,7 +51,7 @@ public class TravelServiceImpl implements TravelService {
 			if (photoConnects != null && photoConnects.size() > 0) {
 				travelPlan.setTravelPhotos(photoConnects);
 			}
-			List<TravelMember> members = travelMemberDao.queryAll("travelId", travelId, "state", 1);
+			List<TravelMember> members = travelMemberDao.queryAllAsc("travelId", travelId, "inviteDate");
 			if (members != null && members.size() > 0) {
 				for (TravelMember model : members) {
 					User user2 = userDao.queryOne("userId", model.getMemberId());
@@ -79,7 +79,8 @@ public class TravelServiceImpl implements TravelService {
 				travelPlan.setTravelId(StringUtils.getGUID());
 			}
 			travelPlan.setCreateId(travelPlan.getCreateUser().getUserId());
-			travelPlan.setCreateDate(DateUtils.getDataTime());
+			String currentDate = DateUtils.getDataTime();
+			travelPlan.setCreateDate(currentDate);
 			travelPlanDao.add(travelPlan);
 			// 添加旅行路线
 			List<TravelRoute> travelRoutes = travelPlan.getTravelRoutes();
@@ -88,6 +89,36 @@ public class TravelServiceImpl implements TravelService {
 					model.setTravelId(travelPlan.getTravelId());
 					model.setRouteId(StringUtils.getGUID());
 					travelRouteDao.add(model);
+				}
+
+			}
+			// 添加旅行成员
+			List<TravelMember> members = travelPlan.getMembers();
+			if (members != null && members.size() > 0) {
+				for (TravelMember model : members) {
+					model.setTravelId(travelPlan.getTravelId());
+					model.setMemberId(model.getUser().getUserId());
+					if (StringUtils.isEmpty(model.getInviteDate())) {
+						model.setInviteDate(currentDate);
+					}
+					// 分为三种状态判断，如果是未处理就更新时间，已同意不处理，未同意，先不处理
+					TravelMember member = travelMemberDao.queryOne("travelId", travelPlan.getTravelId(), "memberId",
+							model.getMemberId());
+					if (member != null) {
+						if (model.getState() == 0) {
+							// 未处理
+							travelMemberDao.updateOneColumn("id", member.getId(), "inviteDate", currentDate);
+
+						} else if (model.getState() == 1) {
+							// 已同意
+
+						} else if (model.getState() == 2) {
+							// 已拒绝
+
+						}
+					} else {
+						travelMemberDao.add(model);
+					}
 				}
 
 			}
