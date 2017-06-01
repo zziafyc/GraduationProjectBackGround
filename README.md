@@ -1,11 +1,10 @@
 ﻿# “校园微生活”后台接口
-#### 框架基本介绍
-> 后台采用的是ssh框架编写的，ssh相信大家都知道。Struts主要用来对用户的请求进行拦截，将拦截的信息交给业务逻辑层处理，其核心控制器是ActionServlet；
-hibernate是利用hql语言负责数据库与dao层的交互，有五个核心接口：Session、SessionFactory、Configuration（前三个采用工厂模式）、Transaction、Query ；
-spring就相当于一个容器，他通过各种bean的配置，整合和管理struts和hibernate,其两大特性：面向切面（AOP）和控制反转(IOC)达到高内聚、松耦合（利用各种注解完成依赖注入）的效果,。
+## 框架基本介绍
+> 后台采用的是ssh框架编写的，ssh相信大家都知道。Struts主要用来对用户的请求进行拦截，将拦截的信息交给业务逻辑层处理，其核心控制器是ActionServlet;hibernate是利用hql语言负责数据库与dao层的交互，有五个核心接口：Session、SessionFactory、Configuration（前三个采用工厂模式）、Transaction、Query ;
+spring就相当于一个容器，他通过各种bean的配置，整合和管理struts和hibernate,其两大特性：面向切面（AOP）和控制反转(IOC)达到高内聚、松耦合（利用各种注解完成依赖注入）的效果。
 
-#### 后台相关代码配置
-##### 1. struts的拦截配置
+### 后台相关代码配置
+#### 1. struts的拦截配置
 	<action name="loginAction_*" method="{1}" class="loginAction">
 		<result type="json">
 		    <param name="root">Rows</param>
@@ -18,7 +17,7 @@ spring就相当于一个容器，他通过各种bean的配置，整合和管理s
 	</action>
 
 
-##### 2. hibernate的数据库相关配置
+#### 2. hibernate的数据库相关配置
 	alias=proxool-pool
     driverUrl=jdbc:mysql://localhost:3306/graduationproject?useUnicode=true&amp;characterEncoding=utf8
     driver=org.gjt.mm.mysql.Driver
@@ -32,7 +31,7 @@ spring就相当于一个容器，他通过各种bean的配置，整合和管理s
     prototypeCount=5
     testBeforeUse=true
     testAfterUse=true
-##### 3. spring容器的bean配置
+#### 3. spring容器的bean配置
     <context:component-scan base-package="com.zzia.graduation"></context:component-scan>
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -77,7 +76,7 @@ spring就相当于一个容器，他通过各种bean的配置，整合和管理s
 		  </value>
 	   </property>
     </bean>
-##### 4. 请求接口时的相关调用
+#### 4. 请求接口时的相关调用
 
 
 	public String getUserInfo() {
