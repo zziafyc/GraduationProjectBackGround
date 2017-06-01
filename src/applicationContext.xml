@@ -62,7 +62,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<tx:annotation-driven transaction-manager="txManager" />
-	<bean id="Aspect" class="com.zzia.graduation.aop.ChangeDB" />
+	<bean id="myAspect" class="com.zzia.graduation.aop.ChangeDB" />
 	<bean id="userDb" class="com.zzia.graduation.aop.UserDbImpl" />
 </beans>
 

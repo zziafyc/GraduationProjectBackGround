@@ -19,7 +19,15 @@ public class ParameterUtils {
 			return new JSONObject();
 		}
 		byte[] buffer = new byte[len];
-		input.read(buffer);
+		for (int i = 0; i < len;) {
+
+			int readlen = input.read(buffer, i, len - i);
+			if (readlen == -1) {
+				break;
+			}
+			i += readlen;
+		}
+
 		input.close();
 		System.out.println(new String(buffer, "UTF-8"));
 		System.out.println("-----------------------------------");
@@ -34,7 +42,14 @@ public class ParameterUtils {
 			return null;
 		}
 		byte[] buffer = new byte[len];
-		input.read(buffer);
+		for (int i = 0; i < len;) {
+
+			int readlen = input.read(buffer, i, len - i);
+			if (readlen == -1) {
+				break;
+			}
+			i += readlen;
+		}
 		input.close();
 		System.out.println(new String(buffer, "UTF-8"));
 		System.out.println("-----------------------------------");
@@ -73,10 +88,10 @@ public class ParameterUtils {
 	public static boolean judgeJsonParams(JSONObject jsonObject, String... args) {
 		int i = 0;
 		while (i < args.length) {
-			if (!jsonObject.has(args[i])&&i==args.length-1) {
+			if (!jsonObject.has(args[i]) && i == args.length - 1) {
 				return false;
 			}
-		
+
 			i++;
 		}
 		return true;
